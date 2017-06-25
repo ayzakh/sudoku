@@ -1,0 +1,20 @@
+{
+  "name": "sudoku",
+  "description": "",
+  "main": "",
+  "authors": [
+    "AZ"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pixi.js": "pixi#^4.4.4"
+  }
+}
