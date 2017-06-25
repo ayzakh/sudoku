@@ -77,9 +77,13 @@ class Model {
       0 0 0 0 0 0 0 0 0
     */
 
-    for (let x = 0; x < this.mapConfig.mapSize; x++) {
+    for (let x = 0, currentY; x < this.ordinateMax - this.mapConfig.mapSize; x++) {
       for (let y = 0; y < this.mapConfig.mapSize; y++) {
-        this.map[x + this.mapConfig.mapSize][y + 1] = this.map[x][y]
+        currentY = y + 1
+        if (currentY >= this.mapConfig.mapSize) {
+          currentY = currentY - this.mapConfig.mapSize
+        }
+        this.map[x + this.mapConfig.mapSize][currentY] = this.map[x][y]
       }
     }
 
@@ -94,6 +98,16 @@ class Model {
       8 9 4 5 6 1 2 3 7
       2 3 7 8 9 4 5 6 1
     */
+
+    for (let y = 0; y < this.ordinateMax - this.mapConfig.mapSize; y++) {
+      for (let x = 0, currentX; x < this.ordinateMax; x++) {
+        currentX = x + 1
+        if (currentX >= this.ordinateMax) {
+          currentX = currentX - this.ordinateMax
+        }
+        this.map[currentX][y + this.mapConfig.mapSize] = this.map[x][y]
+      }
+    }
 
     return this.map
   }
