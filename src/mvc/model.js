@@ -9,24 +9,9 @@ class Model {
     this.ordinateMax = Math.pow(this.mapConfig.mapSize, 2)
     this.map = []
   }
-  /**
-   * Генерация карты
-   * @return array Map
-   */
-  generateMap () {
 
-    // move([1, 2, 3], 1) => [3, 1, 2]
-    let move = (array, step) => {
-      let result = []
-      for (let i = array.length - step; i < array.length; i++) {
-        result.push(array[i])
-      }
-      for (let i = 0; i < array.length - step; i++) {
-        result.push(array[i])
-      }
-      return result
-    }
-
+  _createMap () {
+    
     /*
       0 0 0 0 0 0 0 0 0
       0 0 0 0 0 0 0 0 0
@@ -108,7 +93,84 @@ class Model {
         this.map[currentX][y + this.mapConfig.mapSize] = this.map[x][y]
       }
     }
+  }
 
+  /**
+   * @param {number} n count of randomization (by default 100)
+   */
+  _randomizeMap (n) {
+    if (n == void 0) {
+      n = 100
+    }
+
+    /*
+    > 1 2 3 7 8 9 4 5 6
+      4 5 6 1 2 3 7 8 9
+    > 7 8 9 4 5 6 1 2 3
+      6 1 2 3 7 8 9 4 5
+      9 4 5 6 1 2 3 7 8
+      3 7 8 9 4 5 6 1 2
+      5 6 1 2 3 7 8 9 4
+      8 9 4 5 6 1 2 3 7
+      2 3 7 8 9 4 5 6 1
+            ^   ^
+    */
+
+    let getReversePositions = () => {
+      let basePosition = Math.floor(Math.random() * this.mapConfig.mapSize)
+      let getPosition = () => basePosition * this.mapConfig.mapSize + Math.floor(Math.random() * this.mapConfig.mapSize)
+      let pos1 = getPosition()
+      let pos2 = pos1
+      while (pos2 == pos1) {
+        pos2 = getPosition()
+      }
+      return { pos1: pos1, pos2: pos2 }
+    }
+
+    let reverseMapByPositionX = (positions) => {
+      // console.log('reverseMapByPositionX', positions)
+      for (var y = 0, t; y < this.ordinateMax; y++) {
+        t = this.map[positions.pos1][y]
+        this.map[positions.pos1][y] = this.map[positions.pos2][y]
+        this.map[positions.pos2][y] = t
+      }
+    }
+
+    let reverseMapByPositionY = (positions) => {
+      // console.log('reverseMapByPositionY', positions)
+      for (var x = 0, t; x < this.ordinateMax; x++) {
+        t = this.map[x][positions.pos1]
+        this.map[x][positions.pos1] = this.map[x][positions.pos2]
+        this.map[x][positions.pos2] = t
+      }
+    }
+
+    for (let i = n; i > 0; i--) {
+      reverseMapByPositionX(getReversePositions())
+      reverseMapByPositionY(getReversePositions())
+    }
+
+  }
+
+  /**
+   * @param {number} n count of emptytization (by default mapSize)
+   */
+  _emptyMap (n) {
+    if (n == void 0) {
+      n = this.ordinateMax
+    }
+    for (let i = n; i > 0; i--) {
+      this.map[Math.floor(Math.random() * this.ordinateMax)][Math.floor(Math.random() * this.ordinateMax)] = ''
+    }
+  }
+
+  /**
+   * @return array Map
+   */
+  generateMap () {
+    this._createMap()
+    this._randomizeMap()
+    this._emptyMap(100)
     return this.map
   }
 }
