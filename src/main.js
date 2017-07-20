@@ -9,17 +9,17 @@ class Sudoku {
     let config = {
       display: {
         monitor: {
-          x: 600,
-          y: 600
-        }
+          x: window.innerHeight,
+          y: window.innerHeight
+        },
+        fps: 60
       },
-      speed: 30,
       map: {
         // mapSize: 2
-        // mapSize: 3
+        mapSize: 3
         // mapSize: 4
         // mapSize: 5
-        mapSize: 6
+        // mapSize: 6
       }
     }
     let controller = new Controller(config)

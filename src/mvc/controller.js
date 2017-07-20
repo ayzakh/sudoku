@@ -16,7 +16,7 @@ class Controller {
     let map = this.model.generateMap()
     setInterval(() => {
       this.view.update(map)
-    }, this.config.speed)
+    }, 1000/this.config.display.fps)
   }
 }
 

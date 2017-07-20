@@ -153,11 +153,11 @@ class Model {
   }
 
   /**
-   * @param {number} n count of emptytization (by default mapSize)
+   * @param {number} n count of emptytization (by default ordinateMax * mapSize)
    */
   _emptyMap (n) {
     if (n == void 0) {
-      n = this.ordinateMax
+      n = this.ordinateMax * this.mapConfig.mapSize
     }
     for (let i = n; i > 0; i--) {
       this.map[Math.floor(Math.random() * this.ordinateMax)][Math.floor(Math.random() * this.ordinateMax)] = ''
@@ -170,7 +170,7 @@ class Model {
   generateMap () {
     this._createMap()
     this._randomizeMap()
-    this._emptyMap(100)
+    this._emptyMap()
     return this.map
   }
 }

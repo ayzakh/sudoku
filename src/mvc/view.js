@@ -1,4 +1,5 @@
 import Scene from '../core/scene'
+import Mouse from '../core/mouse'
 
 /**
  * View ^_^
@@ -48,6 +49,16 @@ class View extends Scene {
         this.container.addChild(this.line)
       }
     }
+
+    this.rect = new PIXI.Graphics()
+    this.rect.beginFill(0xFFFF00, 0.5)
+    this.rectsize = this.config.display.monitor.x/Math.pow(this.config.map.mapSize, 2)
+    this.rect.drawRect(this.rectsize, this.rectsize, this.rectsize, this.rectsize)
+    console.log(this.rect)
+    this.container.addChild(this.rect)
+
+    // mouse position
+    this.mouse = new Mouse()
   }
   update (map) {
     for (var x = 0; x < map.length; x++) {
@@ -55,6 +66,17 @@ class View extends Scene {
         this.textBox[x][y].text = map[x][y]
       }
     }
+
+    // hover
+    this.rect.x = this.rectsize * Math.floor(this.mouse.x/this.rectsize) - this.rectsize
+    this.rect.y = this.rectsize * Math.floor(this.mouse.y/this.rectsize) - this.rectsize
+
+    // click detection
+    if (this.mouse.clicked) {
+      console.log('clicked on pos:', this.mouse)
+    }
+
+    // render all
     this.renderer.render(this.container)
   }
 }
