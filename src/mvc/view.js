@@ -14,12 +14,12 @@ class View extends Scene {
   }
   init () {
     // init empty map
-    let mapMaxOrdinate = Math.pow(this.config.map.mapSize, 2)
-    let textBoxSize = this.config.display.monitor.x / mapMaxOrdinate
+    this.mapMaxOrdinate = Math.pow(this.config.map.mapSize, 2)
+    let textBoxSize = this.config.display.monitor.x / this.mapMaxOrdinate
     this.textBox = []
-    for (var x = 0; x < mapMaxOrdinate; x++) {
+    for (var x = 0; x < this.mapMaxOrdinate; x++) {
       this.textBox[x] = []
-      for (var y = 0; y < mapMaxOrdinate; y++) {
+      for (var y = 0; y < this.mapMaxOrdinate; y++) {
         this.textBox[x][y] = new PIXI.Text('', {
           // fontFamily: 'Arial',
           // fontSize: 32,
@@ -52,13 +52,27 @@ class View extends Scene {
 
     this.rect = new PIXI.Graphics()
     this.rect.beginFill(0xFFFF00, 0.5)
-    this.rectsize = this.config.display.monitor.x/Math.pow(this.config.map.mapSize, 2)
+    this.rectsize = this.config.display.monitor.x / this.mapMaxOrdinate
     this.rect.drawRect(this.rectsize, this.rectsize, this.rectsize, this.rectsize)
     console.log(this.rect)
     this.container.addChild(this.rect)
 
     // mouse position
     this.mouse = new Mouse()
+
+    this._getCellByCursor = (cursor) => Math.floor(cursor / (this.config.display.monitor.x / this.mapMaxOrdinate))
+    this._getMainCellByCell = (cell) => Math.floor(cell / this.config.map.mapSize)
+
+    // click events
+    this.mouseEvent = {
+      clicked: false, // click detector
+      onMouseDown: () => {
+        console.log('mousedown on pos:', this._getCellByCursor(this.mouse.x), this._getCellByCursor(this.mouse.y))
+      },
+      onMouseUp: () => {
+        console.log('mouseup on pos:', this._getCellByCursor(this.mouse.x), this._getCellByCursor(this.mouse.y))
+      }
+    }
   }
   update (map) {
     for (var x = 0; x < map.length; x++) {
@@ -72,8 +86,16 @@ class View extends Scene {
     this.rect.y = this.rectsize * Math.floor(this.mouse.y/this.rectsize) - this.rectsize
 
     // click detection
-    if (this.mouse.clicked) {
-      console.log('clicked on pos:', this.mouse)
+    if (this.mouse.clicked == true) {
+      if (this.mouseEvent.clicked == false) {
+        this.mouseEvent.onMouseDown()
+      }
+      this.mouseEvent.clicked = true
+    } else if (this.mouse.clicked == false) {
+      if (this.mouseEvent.clicked == true) {
+        this.mouseEvent.clicked = false
+        this.mouseEvent.onMouseUp()
+      }
     }
 
     // render all
