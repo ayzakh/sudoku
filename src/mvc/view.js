@@ -1,5 +1,4 @@
 import Scene from '../core/scene'
-import Mouse from '../core/mouse'
 
 /**
  * View ^_^
@@ -57,24 +56,8 @@ class View extends Scene {
     console.log(this.rect)
     this.container.addChild(this.rect)
 
-    // mouse position
-    this.mouse = new Mouse()
-
-    this._getCellByCursor = (cursor) => Math.floor(cursor / (this.config.display.monitor.x / this.mapMaxOrdinate))
-    this._getMainCellByCell = (cell) => Math.floor(cell / this.config.map.mapSize)
-
-    // click events
-    this.mouseEvent = {
-      clicked: false, // click detector
-      onMouseDown: () => {
-        console.log('mousedown on pos:', this._getCellByCursor(this.mouse.x), this._getCellByCursor(this.mouse.y))
-      },
-      onMouseUp: () => {
-        console.log('mouseup on pos:', this._getCellByCursor(this.mouse.x), this._getCellByCursor(this.mouse.y))
-      }
-    }
   }
-  update (map) {
+  update (map, mouse) {
     for (var x = 0; x < map.length; x++) {
       for (var y = 0; y < map[x].length; y++) {
         this.textBox[x][y].text = map[x][y]
@@ -82,21 +65,8 @@ class View extends Scene {
     }
 
     // hover
-    this.rect.x = this.rectsize * Math.floor(this.mouse.x/this.rectsize) - this.rectsize
-    this.rect.y = this.rectsize * Math.floor(this.mouse.y/this.rectsize) - this.rectsize
-
-    // click detection
-    if (this.mouse.clicked == true) {
-      if (this.mouseEvent.clicked == false) {
-        this.mouseEvent.onMouseDown()
-      }
-      this.mouseEvent.clicked = true
-    } else if (this.mouse.clicked == false) {
-      if (this.mouseEvent.clicked == true) {
-        this.mouseEvent.clicked = false
-        this.mouseEvent.onMouseUp()
-      }
-    }
+    this.rect.x = this.rectsize * Math.floor(mouse.x/this.rectsize) - this.rectsize
+    this.rect.y = this.rectsize * Math.floor(mouse.y/this.rectsize) - this.rectsize
 
     // render all
     this.renderer.render(this.container)
