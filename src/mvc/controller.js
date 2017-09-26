@@ -12,6 +12,7 @@ class Controller {
     this.config = config
     this.model = new Model(this.config.map)
     this.view = new View(this.config)
+    this.mapMaxOrdinate = Math.pow(this.config.map.mapSize, 2)
 
     // mouse position
     this.mouse = new Mouse()
