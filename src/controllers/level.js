@@ -18,7 +18,7 @@ class Level {
   
   }
   start () {
-    let map = this.map.generateMap()
+    let map = this.map.generate()
     setInterval(() => {
       this.view.update(map)
     }, 1000/this.config.display.fps)

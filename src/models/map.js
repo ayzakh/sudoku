@@ -10,7 +10,7 @@ class Map {
     this.map = []
   }
 
-  _createMap () {
+  _create () {
     
     /*
       0 0 0 0 0 0 0 0 0
@@ -98,7 +98,7 @@ class Map {
   /**
    * @param {number} n count of randomization (by default 100)
    */
-  _randomizeMap (n) {
+  _randomize (n) {
     if (n == void 0) {
       n = 100
     }
@@ -155,7 +155,7 @@ class Map {
   /**
    * @param {number} n count of emptytization (by default ordinateMax * mapSize)
    */
-  _emptyMap (n) {
+  _empty (n) {
     if (n == void 0) {
       n = this.ordinateMax * this.mapConfig.mapSize
     }
@@ -167,10 +167,10 @@ class Map {
   /**
    * @return array Map
    */
-  generateMap () {
-    this._createMap()
-    this._randomizeMap()
-    // this._emptyMap()
+  generate () {
+    this._create()
+    this._randomize()
+    // this._empty()
     return this.map
   }
 }
