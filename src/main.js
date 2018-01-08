@@ -1,10 +1,10 @@
-import Controller from './mvc/controller'
+import Controller from './kernel/controller'
 
 /**
- * Sudoku
+ *Game 
  * @constructor
  */
-class Sudoku {
+class Game {
   constructor () {
     let config = {
       display: {
@@ -27,4 +27,4 @@ class Sudoku {
   }
 }
 
-(new Sudoku())
+(new Game())

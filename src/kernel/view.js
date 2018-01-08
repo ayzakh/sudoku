@@ -1,13 +1,18 @@
-import Scene from '../core/scene'
-
 /**
  * View ^_^
  * @constructor
  * @param config
  */
-class View extends Scene {
+class View {
   constructor (config) {
-    super(config.display.monitor)
+    let monitorConfig = config.display.monitor;
+    this.renderer = PIXI.autoDetectRenderer(monitorConfig.x, monitorConfig.y, {
+      antialias: false,
+      transparent: false,
+      resolution: 1
+    })
+    document.body.appendChild(this.renderer.view)
+    this.container = new PIXI.Container()
     this.config = config
     this.init()
   }
@@ -49,24 +54,20 @@ class View extends Scene {
       }
     }
 
-    this.rect = new PIXI.Graphics()
-    this.rect.beginFill(0xFFFF00, 0.5)
-    this.rectsize = this.config.display.monitor.x / this.mapMaxOrdinate
-    this.rect.drawRect(this.rectsize, this.rectsize, this.rectsize, this.rectsize)
-    console.log(this.rect)
-    this.container.addChild(this.rect)
+    // this.rect = new PIXI.Graphics()
+    // this.rect.beginFill(0xFFFF00, 0.5)
+    // this.rectsize = this.config.display.monitor.x / this.mapMaxOrdinate
+    // this.rect.drawRect(this.rectsize, this.rectsize, this.rectsize, this.rectsize)
+    // console.log(this.rect)
+    // this.container.addChild(this.rect)
 
   }
-  update (map, mouse) {
+  update (map) {
     for (var x = 0; x < map.length; x++) {
       for (var y = 0; y < map[x].length; y++) {
         this.textBox[x][y].text = map[x][y]
       }
     }
-
-    // hover
-    this.rect.x = this.rectsize * Math.floor(mouse.x/this.rectsize) - this.rectsize
-    this.rect.y = this.rectsize * Math.floor(mouse.y/this.rectsize) - this.rectsize
 
     // render all
     this.renderer.render(this.container)

@@ -1,9 +1,9 @@
 /**
- * Model ^_^
+ * Map ^_^
  * @constructor
  * @param mapConfig
  */
-class Model {
+class Map {
   constructor (mapConfig) {
     this.mapConfig = mapConfig
     this.ordinateMax = Math.pow(this.mapConfig.mapSize, 2)
@@ -170,9 +170,9 @@ class Model {
   generateMap () {
     this._createMap()
     this._randomizeMap()
-    this._emptyMap()
+    // this._emptyMap()
     return this.map
   }
 }
 
-export default Model
+export default Map 
